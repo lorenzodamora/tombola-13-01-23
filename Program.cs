@@ -115,6 +115,8 @@ namespace tombola
 				Console.BackgroundColor = ConsoleColor.Black;
 				Console.ForegroundColor = ConsoleColor.White;
 				Console.SetCursorPosition(46, 6);
+				Console.Write("  ");
+				Console.SetCursorPosition(46, 6);
 				Console.Write(ne);
 				Console.ForegroundColor = ConsoleColor.Black;
 
