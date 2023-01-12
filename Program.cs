@@ -23,7 +23,6 @@ namespace tombola
 			Console.Write("TABELLONE");
 
 			//sfondo cartelle
-			Console.SetCursorPosition(2, 2);
 			Console.BackgroundColor = ConsoleColor.Green;
 			for (int i = 2; i < 9; i++)
 			{
@@ -43,14 +42,13 @@ namespace tombola
 			StampCart(c1, 5);
 			StampCart(c2, 55);
 
-			//suddivisione decine visibile
+			//suddivisione colonne visibile
 			Console.BackgroundColor = ConsoleColor.DarkRed;
 			Console.ForegroundColor = ConsoleColor.Gray;
 			Console.SetCursorPosition(5, 1);
 			Console.Write("00--10--20--30--40--50--60--70--80---");
 			Console.SetCursorPosition(55, 1);
 			Console.Write("00--10--20--30--40--50--60--70--80---");
-
 			//tabellone
 			Console.SetCursorPosition(5, 11);
 			Console.Write(" 1-- 2-- 3-- 4-- 5-- 6-- 7-- 8-- 9--10            51--52--53--54--55--56--57--58--59--60");
@@ -90,20 +88,20 @@ namespace tombola
 			Console.ReadKey();
 
 			//estrazione
-			int max = 90;
+			int max = 90; //spiego dopo
 			//array da dove estrae
 			int[] e = new int[90];
 			for (int i = 1; i < 91; i++) e[i - 1] = i;
 			Random R = new Random();
 			do
 			{
-				int ir = R.Next(0, max); //indice random
+				int ir = R.Next(0, max); //indice del random
 				int ne = e[ir]; //numero estratto
 				max--;
 				for (int i = 0; i < max; i++) if (i >= ir) e[i] = e[i + 1];
 				//in questo modo si cancella il numero trovato e ogni numero retrocede di una posizione,
 				//in fondo rimarrà sporco ma non ci si arriverà perchè il massimo è decrementato,
-				//la prima volta il 90 è incluso per il +1, il massimo è decrementato quindi non uscirà dall'array
+				//la prima volta il 90(max parte da 89) è incluso per il +1, il massimo è decrementato quindi non uscirà dall'array con +1
 
 				//controllo e segnare
 				c1 = Csc(c1, ne, 5);
@@ -114,7 +112,7 @@ namespace tombola
 				Console.BackgroundColor = ConsoleColor.Black;
 				Console.ForegroundColor = ConsoleColor.White;
 				Console.SetCursorPosition(46, 6);
-				Console.Write("  ");//cancella il vecchio numero, senza se dopo 61 esce 2 a schermo si legge 21
+				Console.Write("  "); //cancella il vecchio numero, senza se dopo 61 esce 2 a schermo si legge 21
 				Console.SetCursorPosition(46, 6);
 				Console.Write(ne);
 				Console.ForegroundColor = ConsoleColor.Black;
@@ -132,7 +130,7 @@ namespace tombola
             Console.Write("TOOOOOOOOOOOOOOOO...");
             Task.Delay(3000).Wait(); // pausa ad effetto
 			Console.BackgroundColor = ConsoleColor.Green;
-			Console.Clear();
+			Console.Clear(); //posione 0,0
 			Console.Write("TOMBOLA!!\nVINCE LA CARTELLA ");
 			if (s == 0) Console.Write("1!!");
 			else Console.Write("2!!");
@@ -165,10 +163,10 @@ namespace tombola
 			//cartella finale
 			int[,] f = new int[0, 0];
 			do
-			{//
+			{
 				//estrae 15 volte da 1 a 90
 				e = new int[15];
-				for (int i = 0; i < 15; i++) e[i] = R.Next(1, 91);
+				for (int i = 0; i < 15; i++) e[i] = R.Next(1, 91); //91 non compreso
 			} while (Cc(e)); //controlli cartella
 
 			//ordina cartella finale
@@ -176,29 +174,29 @@ namespace tombola
 			do
 			{
 				f = new int[3, 9]; //resetta cartella
-				cinque = new int[3]; //resetta contenggio righe
-				for (int j = 0; j < 9; j++)//per ogni decina esclusa 90
+				cinque = new int[3]; //resetta conteggio righe
+				for (int j = 0; j < 9; j++)//for per ogni decina esclusa 90
 				{
 					int cd = 0; int pd = 0; //cd conta decine //pd prima decina
-					for (int i = 0; i < 15; i++) //ogni numero
+					for (int i = 0; i < 15; i++) //for per ogni numero
 					{
-						//questo if è troppo da spiegare, in breve conta quante decine nella stessa colonna
+						//in breve conta quante decine nella stessa colonna
 						if (e[i].ToString().Length == 2 && e[i].ToString().StartsWith(j.ToString())) //se non è 00 e se è uguale alla decina del ciclo
 						{
 							cd++; //conta quante decine
 							if (cd == 1)
 							{
-								pd = i; //segna la posizione nell'array della prima decina
+								pd = i; //segna la posizione nell'array della prima decina per stampare
 								if (j == 8 && e[14] == 90) cd++; //se c'è il 90 stampa insieme agli 80
 							}
 						}
 						else if (j == 0 && e[i] < 10) cd++; //da 00 a 09
 					}
 
+					//siamo ancora nel for delle decine
 					//se sono 3 2 o 1 decina, se 3 riempi, se 2 o 1 fa a caso
-					//cr controllo ripetizione
-					int cr = 3;
-					if (cd == 3) for (int i = 0; i < 3; i++)
+					int cr = 3; //cr controllo ripetizione
+                    if (cd == 3) for (int i = 0; i < 3; i++)
 						{
 							cinque[i]++;
 							f[i, j] = e[pd + i];
@@ -207,9 +205,9 @@ namespace tombola
 					int counter = 20;
 					if (cd != 3) for (int i = 0; i < cd; i++)
 						{
-							int g = -1;
+							int g = -1; //in che riga scrivere il numero
 							Task.Delay(1).Wait(); //necessario o mi fa i numeri uguali, Thread.Sleep(1) non serve a nulla
-							//4 if per evitare troppi cicli a vuoto
+							//4 if per evitare troppi cicli a vuoto e quindi delay alla cartella
 							if (cinque[0] == 5 && cinque[1] == 5) g = 2;
 							if (cinque[1] == 5 && cinque[2] == 5) g = 0;
 							if (cinque[0] == 5 && cinque[2] == 5) g = 1;
@@ -220,16 +218,16 @@ namespace tombola
 								if (cinque[1] == 5) g = R.Next(0, 2) * 2; //se da 0 risulta 0, se da 1 risulta 2;
 								if (cinque[2] == 5) g = R.Next(0, 2);
 							}
-							//per non cancellare numeri appena messi
-							if (g != cr)
+                            //per non cancellare in console numeri appena messi 
+                            if (g != cr)
 							{
 								cr = g; //controllo ripetizione
-								cinque[g]++; //numeri nella riga
+								cinque[g]++; //conta numeri nella stessa riga
 								f[g, j] = e[pd + i]; //copia numero nella cartella
 							}
-							else //se non può far nulla
+							else //se non può far nulla //fix ciclo infinito
 							{
-								counter--; //conta ciclo
+								counter--; //conta cicli
 								if (counter == 0) //dopo 20 cicli
 								{
 									cinque[0] = 6; //controlli per ricominciare tutto
@@ -247,7 +245,7 @@ namespace tombola
 		static bool Cc(int[] e)
 		{
 			//ordina l'array cosicchè se ce ne sono due uguali sono uno davanti all'altro ripete
-			Array.Sort(e); //.Sort ordina anche l'array della funzione GeneraCartella, comodo
+			Array.Sort(e); //ordina anche l'array della funzione GeneraCartella, comodo
 			//controlli stesso numero
             for (int i = 0; i < 14; i++) if (e[i] == e[i + 1]) return true;
 
@@ -255,14 +253,14 @@ namespace tombola
 			for (int i = 0; i < 15; i++)
 			{
 				int d = 0; //conta decine
-				for (int j = 1; j < 15; j++)
+				for (int j = 0; j < 15; j++)
 				{
 					//confronto decine tranne 90 che lo segna dopo
 					if ((e[i].ToString().Length == 2 && e[j].ToString().Length == 2 && e[i].ToString().Substring(0, 1) == e[j].ToString().Substring(0, 1)) || (e[i].ToString().Length == 1 && e[j].ToString().Length == 1)) d++;
 					//il 90 conta nelle 80ine:
 					//solo nella posizione p14 c'è il 90, e nella p13 c'è sempre un 80ina se nella p14 c'è il 90, quando j controlla l'ultima 80ina conta anche il 90 se c'è
 					if (e[14] == 90 && j == 13) d++;
-					if (d == 4) return true; //deve rifare con 4 decine uguali
+					if (d > 3) return true; //deve rifare con 4 o 5 decine uguali
 				}
 			}
 
@@ -271,8 +269,12 @@ namespace tombola
 			for (int j = 1; j < 9; j++) //per ogni decina escluso il 90 e 00
 			{
 				bool cc = true;
-				//ogni decina //se c'è una decina uguale al ciclo allora va bene
-				for (int i = 0; i < 15; i++) if (e[i].ToString().Length == 2 && e[i].ToString().Substring(0, 1) == j.ToString()) cc = false;
+				//ogni decina //se c'è una decina uguale al ciclo allora va bene 
+				for (int i = 0; i < 15; i++) if (e[i].ToString().Length == 2 && e[i].ToString().Substring(0, 1) == j.ToString())
+					{
+						cc = false;
+						break; //appena ce la decina j allora ok
+                    }
 				if (cc == true) return true; // return cc senza if non va bene perchè finisce la funzione
 			}
 			return false;
@@ -284,7 +286,7 @@ namespace tombola
 				{
 					//calcolo posizione comodo per segnare dopo
 					Console.SetCursorPosition(x + i * 4, 3 + j * 2);
-					if (c[j, i] != 0) Console.Write(c[j, i]);
+					if (c[j, i] != 0) Console.Write(c[j, i]); //la cartella è piena di 0
 				}
 		}
 		//controllo e segnare cartella
@@ -296,7 +298,7 @@ namespace tombola
 						//calcolo posizione di prima
 						Console.SetCursorPosition(x - 1 + i * 4, 3 + j * 2);
 						Console.Write($" {ne} ");
-						c[j, i] = 0; //cancella il numero uscito per il calcolo vittoria
+						c[j, i] = 0; //cancella il numero uscito per il calcolo vittoria / fine game
 					}
 			return c;
 		}
@@ -308,7 +310,6 @@ namespace tombola
 						Console.SetCursorPosition(4 + i * 4, 13 + j * 2);
 						Console.Write($" {ne} ");
 						t[j, i] = 0;
-
 					}
 			for (int j = 0; j < 4; j++) for (int i = 10; i < 20; i++) if (t[j, i] == ne)
 					{
