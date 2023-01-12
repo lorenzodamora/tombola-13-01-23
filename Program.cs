@@ -70,6 +70,7 @@ namespace tombola
 			//crea e stampa tabellone
 			int[,] t = new int[5, 20];
 			int s = 0;
+			int s2 = 0;
 			for (int j = 0; j < 5; j++) for (int i = 0; i < 10; i++)
 				{
 					s++;
@@ -87,8 +88,6 @@ namespace tombola
 
 			//inizio game
 			Console.ReadKey();
-			bool w12 = true; //vince c1 o c2? //se pareggio vince 1
-			bool win; //finisci gioco
 
 			//estrazione
 			int max = 90;
@@ -115,36 +114,28 @@ namespace tombola
 				Console.BackgroundColor = ConsoleColor.Black;
 				Console.ForegroundColor = ConsoleColor.White;
 				Console.SetCursorPosition(46, 6);
-				Console.Write("  ");
+				Console.Write("  ");//cancella il vecchio numero, senza se dopo 61 esce 2 a schermo si legge 21
 				Console.SetCursorPosition(46, 6);
 				Console.Write(ne);
 				Console.ForegroundColor = ConsoleColor.Black;
 
-				//win, finire il ciclo e dire chi ha vinto
-				win = true; //estrai di nuovo
-				s = 0; int s2 = 0; // somma cartelle
+				//fine partita?? (TOMBOLA?)
+				s = 0; s2 = 0; // somma cartelle
 				foreach (var v in c1) s += v;
 				foreach (var v in c2) s2 += v;
-				if (s2 == 0)
-				{
-					win = false;
-					w12 = false;
-				}
-				if (s == 0)
-				{
-					win = false;
-					w12 = true;
-				}
-				Console.ReadKey();
-			} while (win); //somma c1 o c2 = 0 
+                Console.ReadKey();
+                if (s == 0 || s2 == 0) break;
+			} while (true); //fine quando somma c1 o c2 = 0
 
-			//fine //non ho capito perchè creda non ci possa arrivare
-			Task.Delay(2500).Wait();
+            Console.SetCursorPosition(5, 25);
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.Write("TOOOOOOOOOOOOOOOO...");
+            Task.Delay(3000).Wait(); // pausa ad effetto
 			Console.BackgroundColor = ConsoleColor.Green;
 			Console.Clear();
-			Console.WriteLine("TOMBOLA!!");
-			if (w12 == true) Console.Write("VINCE LA CARTELLA 1!!");
-			else Console.Write("VINCE LA CARTELLA 2!!");
+			Console.Write("TOMBOLA!!\nVINCE LA CARTELLA ");
+			if (s == 0) Console.Write("1!!");
+			else Console.Write("2!!");
 			Console.SetCursorPosition(0, 27);
 			Console.BackgroundColor = ConsoleColor.DarkBlue;
 		}
