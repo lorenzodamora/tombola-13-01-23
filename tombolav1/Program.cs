@@ -7,7 +7,7 @@ namespace tombola
 	{
 		static void Main()
 		{
-			//spiegazione nomi delle variabili in .txt a parte
+			//spiegazione nomi delle variabili in file.txt a parte
 
 			Start();
 			int[,] c1 = GeneraCartella(); //crea cartella 1
@@ -121,14 +121,14 @@ namespace tombola
 				s = 0; s2 = 0; // somma cartelle
 				foreach (var v in c1) s += v;
 				foreach (var v in c2) s2 += v;
-                Console.ReadKey();
-                if (s == 0 || s2 == 0) break;
+				Console.ReadKey();
+				if (s == 0 || s2 == 0) break;
 			} while (true); //fine quando somma c1 o c2 = 0
 
-            Console.SetCursorPosition(5, 25);
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.Write("TOOOOOOOOOOOOOOOO...");
-            Task.Delay(3000).Wait(); // pausa ad effetto
+			Console.SetCursorPosition(5, 25);
+			Console.BackgroundColor = ConsoleColor.White;
+			Console.Write("TOOOOOOOOOOOOOOOO...");
+			Task.Delay(3000).Wait(); // pausa ad effetto
 			Console.BackgroundColor = ConsoleColor.Green;
 			Console.Clear(); //posione 0,0
 			Console.Write("TOMBOLA!!\nVINCE LA CARTELLA ");
@@ -196,7 +196,7 @@ namespace tombola
 					//siamo ancora nel for delle decine
 					//se sono 3 2 o 1 decina, se 3 riempi, se 2 o 1 fa a caso
 					int cr = 3; //cr controllo ripetizione
-                    if (cd == 3) for (int i = 0; i < 3; i++)
+					if (cd == 3) for (int i = 0; i < 3; i++)
 						{
 							cinque[i]++;
 							f[i, j] = e[pd + i];
@@ -218,8 +218,8 @@ namespace tombola
 								if (cinque[1] == 5) g = R.Next(0, 2) * 2; //se da 0 risulta 0, se da 1 risulta 2;
 								if (cinque[2] == 5) g = R.Next(0, 2);
 							}
-                            //per non cancellare in console numeri appena messi 
-                            if (g != cr)
+							//per non cancellare in console numeri appena messi 
+							if (g != cr)
 							{
 								cr = g; //controllo ripetizione
 								cinque[g]++; //conta numeri nella stessa riga
@@ -247,7 +247,7 @@ namespace tombola
 			//ordina l'array cosicchè se ce ne sono due uguali sono uno davanti all'altro ripete
 			Array.Sort(e); //ordina anche l'array della funzione GeneraCartella, comodo
 			//controlli stesso numero
-            for (int i = 0; i < 14; i++) if (e[i] == e[i + 1]) return true;
+			for (int i = 0; i < 14; i++) if (e[i] == e[i + 1]) return true;
 
 			//controlla se ci sono 4 decine uguali
 			for (int i = 0; i < 15; i++)
@@ -274,7 +274,7 @@ namespace tombola
 					{
 						cc = false;
 						break; //appena ce la decina j allora ok
-                    }
+					}
 				if (cc == true) return true; // return cc senza if non va bene perchè finisce la funzione
 			}
 			return false;
